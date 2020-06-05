@@ -10,7 +10,6 @@ import { MdEdit } from "react-icons/md";
 
 const Profile = (props) => {
   const { token } = props;
-  if (!token) return <Redirect to={"/login"} />;
 
   const [theUser, setTheUser] = useState(null);
 
@@ -49,6 +48,8 @@ const Profile = (props) => {
     borderBottom: "none",
     boxShadow: "none",
   };
+
+  if (!token) return <Redirect to={"/login"} />;
 
   return (
     <>
