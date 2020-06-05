@@ -36,7 +36,7 @@ self.__precacheManifest = [
     "url": "/entertain-frontEnd/static/media/blank-profile-picture.9acfe78b.png"
   },
   {
-    "revision": "a0d859433ea08d51e7dfa65917eb1a76",
+    "revision": "d594e3d69f695feaca7f5a316d6e930b",
     "url": "/entertain-frontEnd/index.html"
   }
 ];
