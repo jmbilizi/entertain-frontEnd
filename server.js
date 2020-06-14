@@ -4,6 +4,7 @@ const PORT = process.env.PORT || 3001;
 const app = express();
 const mongoose = require("mongoose");
 var logger = require("morgan");
+const favicon = require("serve-favicon");
 var bodyParser = require("body-parser");
 const connectHistoryApiFallback = require("connect-history-api-fallback");
 const auth = require("./routes/auth");
@@ -14,10 +15,10 @@ const user = require("./routes/user");
 // Define middleware here
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
-// Serve up static assets (usually on heroku)
-if (process.env.NODE_ENV === "production") {
-  app.use(express.static("client/build"));
-}
+
+// Serve the static files from the React app
+app.use(express.static(path.join(__dirname, 'client/build')));
+
 // morgan, bodyparser, connectionHistory
 app.use(logger("dev"));
 app.use(bodyParser.json());
@@ -46,14 +47,18 @@ app.get("/test", (req, res) => {
 //   res.sendFile(path.join(__dirname, "./client/build/index.html"));
 // });
 
-app.get("*", (req, res) => {
-  let url = path.join(__dirname, "./client/build", "index.html");
-  if (!url.startsWith("/app/"))
-    // since we're on local windows
-    url = url.substring(1);
-  res.sendFile(url);
-});
+// app.get("*", (req, res) => {
+//   let url = path.join(__dirname, "build", "index.html");
+//   if (!url.startsWith("/app/"))
 
+//     url = url.substring(1);
+//   res.sendFile(url);
+// });
+
+// Handles any requests that don't match the ones above
+app.get('*', (req, res) =>{
+    res.sendFile(path.join(__dirname+'/client/build/index.html'));
+});
 // Mongodb connection
 mongoose.connect(
   process.env.MONGODB_URI ||
@@ -61,6 +66,8 @@ mongoose.connect(
   {
     useNewUrlParser: true,
     useFindAndModify: false,
+    useUnifiedTopology: true,
+    useCreateIndex: true,
   },
   () => {
     console.log("connected to mongodb");
